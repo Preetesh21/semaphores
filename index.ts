@@ -1,11 +1,3 @@
-// let n:string="hello";
-// let age:number=12;
-
-// console.log(age);
-
-
-
-
 import { Mutex } from "./src/mutex";
 import { Semaphore } from "./src/semaphore";
 import { CondVariable } from "./src/condvariable";
