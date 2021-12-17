@@ -1,9 +1,13 @@
-function Mutex(this:any) {
+class Mutex{
+	public _isLocked:boolean;
+	public _waiting:Array<()=>void>
+
+	constructor(){
 	this._isLocked = false;
 	this._waiting = [];
 }
 
-Mutex.prototype.lock = function (cb:()=>any) {
+public lock = function (cb:()=>any) {
 	if (this._isLocked) {
 		this._waiting.push(cb);
 	} else {
@@ -13,13 +17,8 @@ Mutex.prototype.lock = function (cb:()=>any) {
 };
 
 
-Object.defineProperty(Mutex.prototype, 'isLocked', {
-	get: function () {
-		return this._isLocked;
-	}
-});
 
-Mutex.prototype.tryLock = function () {
+public tryLock = function () {
 	if (this._isLocked) {
 		return false;
 	}
@@ -29,7 +28,7 @@ Mutex.prototype.tryLock = function () {
 };
 
 
-Mutex.prototype.unlock = function () {
+public unlock = function () {
 	if (!this._isLocked) {
 		throw new Error('Mutex is not locked');
 	}
@@ -43,9 +42,11 @@ Mutex.prototype.unlock = function () {
 	}
 };
 
-Mutex.prototype.resetQueue = function() {
+public resetQueue = function() {
 	this._isLocked=false;
 	this._waiting = [];
 };
 
+
+}
 export {Mutex as Mutex};

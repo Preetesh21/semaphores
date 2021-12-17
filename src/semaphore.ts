@@ -1,22 +1,23 @@
-function Semaphore(this:any,initialCount:number) {
+class semaphore{
+	public _count:number;
+	public _waiting:Array<()=>void>
+    constructor (initialCount:number=1) {
 	this._count = initialCount || 1;
 	this._waiting = [];
 }
 
-
-Semaphore.prototype.wait = function (cb:()=>any) {
+public wait(cb:()=>any) {
 	this._count -= 1;
 
 	if (this._count < 0) {
 		this._waiting.push(cb);
 	} else {
-		console.log(this);
 		cb.call(this);
 	}
 };
 
 
-Semaphore.prototype.signal = function () {
+public signal = function () {
 	this._count += 1;
 
 	if (this._count <= 0) {
@@ -26,6 +27,6 @@ Semaphore.prototype.signal = function () {
 		}
 	}
 };
+}
 
-
-export {Semaphore as Semaphore};
+export {semaphore as Semaphore};

@@ -1,8 +1,3 @@
-function CondVariable(this:any,initialValue:number) {
-	this._value = initialValue;
-	this._waiting = [];
-}
-
 
 function condToFunc(cond:any) {
 	if (typeof cond === 'function') {
@@ -23,14 +18,21 @@ function condToFunc(cond:any) {
 
 	throw new TypeError('Unknown condition type: ' + (typeof cond));
 }
+class CondVariable {
+	public _value:boolean;
+	public _waiting:Array<()=>void>
 
+	constructor(initialValue:boolean){
+	this._value = initialValue;
+	this._waiting = [];
+}
 
-CondVariable.prototype.get = function () {
+public get = function () {
 	return this._value;
 };
 
 
-CondVariable.prototype.wait = function (cond:any, cb:()=>void) {
+public wait = function (cond:any, cb:()=>void) {
 	var test = condToFunc(cond);
 
 	if (test(this._value)) {
@@ -41,7 +43,7 @@ CondVariable.prototype.wait = function (cond:any, cb:()=>void) {
 };
 
 
-CondVariable.prototype.set = function (value:number) {
+public set = function (value:any) {
 	this._value = value;
 
 	for (var i = 0; i < this._waiting.length; i++) {
@@ -54,5 +56,6 @@ CondVariable.prototype.set = function (value:number) {
 		}
 	}
 };
+}
 
 export {CondVariable as CondVariable};
